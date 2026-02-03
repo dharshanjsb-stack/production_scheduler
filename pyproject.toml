@@ -1,0 +1,19 @@
+[project]
+name = "production_scheduler"
+authors = [
+    { name = "dharshan", email = "dharshanjsb@gmail.com"}
+]
+description = "Production Scheduler for ERPNext"
+requires-python = ">=3.10"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = [
+    # Add any extra python libraries here if needed
+]
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.bench]
+is-frappe-app = true
