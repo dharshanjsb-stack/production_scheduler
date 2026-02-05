@@ -67,3 +67,37 @@ def create_production_schedule(production_plan, schedule_date):
     frappe.db.commit()
 
     return doc.name
+@frappe.whitelist()
+def get_scheduler_queue():
+    return frappe.db.sql("""
+        SELECT
+            name,
+            schedule_date,
+            customer_name,
+            item,
+            quality,
+            colour,
+            gsm,
+            planned_weight,
+            actual_production,
+            machine_status,
+            dispatch_status,
+            idx
+        FROM `tabProduction Scheduler`
+        ORDER BY schedule_date ASC, idx ASC
+    """, as_dict=True)
+@frappe.whitelist()
+def update_scheduler_order(rows):
+    import json
+    rows = json.loads(rows)
+
+    for i, row in enumerate(rows):
+        frappe.db.set_value(
+            "Production Scheduler",
+            row["name"],
+            "idx",
+            i
+        )
+
+    frappe.db.commit()
+
