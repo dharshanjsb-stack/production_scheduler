@@ -1,1 +1,39 @@
+<div class="production-scheduler-wrapper">
+    <h3>Production Schedule (Drag & Drop)</h3>
 
+    <table class="table table-bordered" id="schedule-table">
+        <thead>
+            <tr class="bg-light">
+                <th>Date</th>
+                <th>Work Order</th>
+                <th>Party</th>
+                <th>Quality</th>
+                <th>Colour</th>
+                <th>GSM</th>
+                <th>Planned Qty</th>
+                <th>Actual</th>
+            </tr>
+        </thead>
+        <tbody id="schedule-body">
+            <!-- Rows injected by JS -->
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary" id="save-order">
+        Save Order
+    </button>
+</div>
+
+<style>
+.production-scheduler-wrapper {
+    padding: 20px;
+}
+
+#schedule-table tbody tr {
+    cursor: grab;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+</style>
