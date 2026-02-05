@@ -11,4 +11,3 @@ app_include_js = []
 desk_pages = {
     "production-scheduler-board": "production_scheduler.page.production_scheduler_board.production_scheduler_board"
 }
-
