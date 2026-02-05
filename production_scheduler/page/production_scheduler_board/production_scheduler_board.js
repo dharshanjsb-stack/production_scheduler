@@ -1,86 +1,36 @@
-frappe.pages['production-scheduler-board'].on_page_load = function(wrapper) {
-    const page = frappe.ui.make_app_page({
+frappe.pages['production-scheduler-board'].on_page_load = function (wrapper) {
+    let page = frappe.ui.make_app_page({
         parent: wrapper,
-        title: 'Production Scheduler',
+        title: 'Production Scheduler Board',
         single_column: true
     });
 
-    load_data();
-};
+    page.main.html(`
+        <div class="production-board">
+            <h3>Production Scheduler Board</h3>
+            <div id="scheduler-area">
+                Loading production schedule...
+            </div>
+        </div>
+    `);
 
-function load_data() {
     frappe.call({
-        method: 'production_scheduler.production_scheduler.api.get_queue_data',
-        callback: function(r) {
-            const tbody = document.getElementById('schedule-body');
-            tbody.innerHTML = '';
+        method: "production_scheduler.api.get_queue_data",
+        callback: function (r) {
+            if (r.message) {
+                let html = "<ul>";
+                r.message.forEach(row => {
+                    html += `<li>
+                        <b>${row.work_order}</b> |
+                        ${row.party} |
+                        ${row.quality} |
+                        ${row.date}
+                    </li>`;
+                });
+                html += "</ul>";
 
-            r.message.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.setAttribute('draggable', true);
-                tr.dataset.name = row.work_order;
-
-                tr.innerHTML = `
-                    <td>${row.date || ''}</td>
-                    <td>${row.work_order}</td>
-                    <td>${row.party || ''}</td>
-                    <td>${row.quality || ''}</td>
-                    <td>${row.colour || ''}</td>
-                    <td>${row.gsm || ''}</td>
-                    <td>${row.weight || 0}</td>
-                    <td>${row.actual || 0}</td>
-                `;
-
-                tbody.appendChild(tr);
-            });
-
-            enable_drag_drop();
-        }
-    });
-}
-
-function enable_drag_drop() {
-    let dragged;
-
-    document.querySelectorAll('#schedule-body tr').forEach(row => {
-        row.addEventListener('dragstart', e => {
-            dragged = row;
-            row.classList.add('dragging');
-        });
-
-        row.addEventListener('dragend', e => {
-            row.classList.remove('dragging');
-        });
-
-        row.addEventListener('dragover', e => {
-            e.preventDefault();
-            const target = e.target.closest('tr');
-            if (target && target !== dragged) {
-                target.parentNode.insertBefore(dragged, target);
+                document.getElementById("scheduler-area").innerHTML = html;
             }
-        });
-    });
-}
-
-document.addEventListener('click', function(e) {
-    if (e.target.id === 'save-order') {
-        save_order();
-    }
-});
-
-function save_order() {
-    const rows = [];
-    document.querySelectorAll('#schedule-body tr').forEach(tr => {
-        rows.push(tr.dataset.name);
-    });
-
-    frappe.call({
-        method: 'production_scheduler.production_scheduler.api.update_queue_order',
-        args: {
-            rows: JSON.stringify(rows)
-        },
-        callback: function() {
-            frappe.msgprint('Production order saved successfully');
         }
     });
-}
+};
