@@ -1,19 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "production_scheduler"
+version = "0.0.1"
+description = "Production Scheduler App"
 authors = [
-    { name = "dharshan", email = "dharshanjsb@gmail.com"}
+    { name = "Dharshan JSB Stack", email = "dharshanjsb@gmail.com" }
 ]
-description = "Production Scheduler for ERPNext"
-requires-python = ">=3.10"
-readme = "README.md"
-dynamic = ["version"]
-dependencies = [
-    # Add any extra python libraries here if needed
-]
+dependencies = []
 
-[build-system]
-requires = ["flit_core >=3.4,<4"]
-build-backend = "flit_core.buildapi"
-
-[tool.bench]
-is-frappe-app = true
+[tool.bench.frappe-dependencies]
+frappe = "~=16.0"
