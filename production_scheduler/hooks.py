@@ -4,3 +4,4 @@ app_publisher = "Dharshan JSB Stack"
 app_description = "Custom Production Scheduling App"
 app_email = "dharshanjsb@gmail.com"
 app_license = "MIT"
+fixtures = []
